@@ -8,6 +8,7 @@ from email import encoders
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 import json
+import sqlite3
 
 
 #print(dir(service))
@@ -133,23 +134,59 @@ def get_email_message_details(service, msg_id):
 
 
 
-def setdate(date): #NON TOCCARE NIENTE QUI
+
+
+
+
+DATABASE_FILE = 'date_storage.db'
+
+def initialize_db():
+    """Crea il database e la tabella se non esistono già."""
+    conn = sqlite3.connect(DATABASE_FILE)
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS stored_date (
+            id INTEGER PRIMARY KEY,
+            date TEXT
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+def setdate(date):  # NON TOCCARE NIENTE QUI
     if isinstance(date, str):
         date = parsedate_to_datetime(date)
     if date.tzinfo is None:
         date = date.replace(tzinfo=timezone.utc)
-    with open('last_date.txt', 'w') as f:
-        f.write(date.isoformat())
+    
+    initialize_db()  # Assicurati che il database sia inizializzato
+    
+    conn = sqlite3.connect(DATABASE_FILE)
+    c = conn.cursor()
+    # Inserisce o sostituisce la data con id=1
+    c.execute('''
+        INSERT OR REPLACE INTO stored_date (id, date) VALUES (1, ?)
+    ''', (date.isoformat(),))
+    conn.commit()
+    conn.close()
 
-def get_stored_date(): #NON TOCCARE NIENTE QUI
-    if not os.path.exists('last_date.txt'):
+def get_stored_date():  # NON TOCCARE NIENTE QUI
+    if not os.path.exists(DATABASE_FILE):
         return None
     try:
-        with open('last_date.txt', 'r') as f:
-            return datetime.fromisoformat(f.read().strip())
+        conn = sqlite3.connect(DATABASE_FILE)
+        c = conn.cursor()
+        c.execute('SELECT date FROM stored_date WHERE id = 1')
+        row = c.fetchone()
+        conn.close()
+        if row:
+            return datetime.fromisoformat(row[0])
+        else:
+            return None
     except Exception as e:
         print(f"Errore lettura data salvata: {e}")
         return None
+
     
 """def new_emails(service): 
     message = get_email_messages(service, max_results=1)
@@ -165,17 +202,46 @@ def get_stored_date(): #NON TOCCARE NIENTE QUI
 """    
 
 
+def initialize_mail_ids_table():
+    """Crea la tabella mail_ids se non esiste già."""
+    conn = sqlite3.connect(DATABASE_FILE)
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS mail_ids (
+            id TEXT PRIMARY KEY
+        )
+    ''')
+    conn.commit()
+    conn.close()
 
-#id mail per eliminazione mail
-def load_stored_ids(file_path="mail_ids.json"):
-    if os.path.exists(file_path):
-        with open(file_path, "r") as f:
-            return json.load(f)
-    return []
+def load_stored_ids():
+    """Carica gli id delle mail dalla tabella mail_ids."""
+    if not os.path.exists(DATABASE_FILE):
+        return []
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        c = conn.cursor()
+        c.execute('SELECT id FROM mail_ids')
+        rows = c.fetchall()
+        conn.close()
+        return [row[0] for row in rows]
+    except Exception as e:
+        print(f"Errore lettura degli id: {e}")
+        return []
 
-def save_ids(ids, file_path="mail_ids.json"):
-    with open(file_path, "w") as f:
-        json.dump(ids, f)
+def save_ids(ids):
+    """Salva (sovrascrivendo quelli precedenti) gli id delle mail nella tabella mail_ids."""
+    initialize_mail_ids_table()  # Assicurati che la tabella esista
+    conn = sqlite3.connect(DATABASE_FILE)
+    c = conn.cursor()
+    # Rimuove tutte le righe presenti
+    c.execute('DELETE FROM mail_ids')
+    # Inserisce ogni id presente nella lista
+    for mail_id in ids:
+        c.execute('INSERT INTO mail_ids (id) VALUES (?)', (mail_id,))
+    conn.commit()
+    conn.close()
+
 
 def return_mails():
     service = create_service()

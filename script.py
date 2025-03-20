@@ -24,9 +24,13 @@ def start(domanda,topk = 5,adjustquery = True):
     generateEmail(risposta)
 
 
-start("ci sono visite mediche in programma per i dipendenti?",5,True)
+queryiniziale = "ci sono visite mediche in programma per i dipendenti?"
+
+start(queryiniziale,5,True)
 
 #TODO: migliorare la gestione delle mail, adesso vengono scaricate tutte le mail ogni volta ma non so come risolvere cristoddio
+
+#TODO: mettere mail ids e last_date su un db madonna
 
 
 

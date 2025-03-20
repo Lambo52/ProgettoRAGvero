@@ -3,5 +3,4 @@
 /.env
 /client_secret.json
 /token files
-/last_date.txt
-/mail_ids.json
+/date_storage.db
