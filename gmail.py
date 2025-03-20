@@ -141,7 +141,7 @@ def get_email_message_details(service, msg_id):
 DATABASE_FILE = 'date_storage.db'
 
 def initialize_db():
-    """Crea il database e la tabella se non esistono già."""
+    #creazione db e tabella 1, tabella 2 fatta dopo perché si
     conn = sqlite3.connect(DATABASE_FILE)
     c = conn.cursor()
     c.execute('''
@@ -159,11 +159,11 @@ def setdate(date):  # NON TOCCARE NIENTE QUI
     if date.tzinfo is None:
         date = date.replace(tzinfo=timezone.utc)
     
-    initialize_db()  # Assicurati che il database sia inizializzato
+    initialize_db()  #assolutamente da tenere
     
     conn = sqlite3.connect(DATABASE_FILE)
     c = conn.cursor()
-    # Inserisce o sostituisce la data con id=1
+    # id è 1 tanto è solo quello
     c.execute('''
         INSERT OR REPLACE INTO stored_date (id, date) VALUES (1, ?)
     ''', (date.isoformat(),))
@@ -203,7 +203,7 @@ def get_stored_date():  # NON TOCCARE NIENTE QUI
 
 
 def initialize_mail_ids_table():
-    """Crea la tabella mail_ids se non esiste già."""
+    
     conn = sqlite3.connect(DATABASE_FILE)
     c = conn.cursor()
     c.execute('''
@@ -215,7 +215,7 @@ def initialize_mail_ids_table():
     conn.close()
 
 def load_stored_ids():
-    """Carica gli id delle mail dalla tabella mail_ids."""
+    
     if not os.path.exists(DATABASE_FILE):
         return []
     try:
@@ -230,13 +230,13 @@ def load_stored_ids():
         return []
 
 def save_ids(ids):
-    """Salva (sovrascrivendo quelli precedenti) gli id delle mail nella tabella mail_ids."""
+    
     initialize_mail_ids_table()  # Assicurati che la tabella esista
     conn = sqlite3.connect(DATABASE_FILE)
     c = conn.cursor()
-    # Rimuove tutte le righe presenti
+    #via tutto e metto tutto da 0
     c.execute('DELETE FROM mail_ids')
-    # Inserisce ogni id presente nella lista
+    
     for mail_id in ids:
         c.execute('INSERT INTO mail_ids (id) VALUES (?)', (mail_id,))
     conn.commit()
