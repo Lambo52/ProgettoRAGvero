@@ -30,7 +30,9 @@ start(queryiniziale,5,True)
 
 #TODO: migliorare la gestione delle mail, adesso vengono scaricate tutte le mail ogni volta ma non so come risolvere cristoddio
 
-#TODO: mettere mail ids e last_date su un db madonna
+#TODO: mettere a posto file su db, dividerlo e trattare meglio la variabile del nome del db
+
+# RICORDARSI DI CANCELLARE FAISS_INDEX E DB SE SI VUOLE RESTARTARE, SE NO OBV CARICA LE MAIL SULLO STESSO VDB
 
 
 
