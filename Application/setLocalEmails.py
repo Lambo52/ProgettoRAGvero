@@ -1,4 +1,4 @@
-from Database.dbfunctions import *
+from Database.dbfunctions import DBManager
 from GoogleAPI.gmail import *
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
@@ -13,13 +13,16 @@ def return_mails():
     mails = []
     mailstot = []
 
-    stored_date = get_stored_date()
+    #conn = initialize_db() #DATABASE
+    db_manager = DBManager()
+
+    stored_date = db_manager.get_stored_date() #DATABASE
     
     # variabile inutile ma non toglierla per sicurezza
     latest_relevant_date = stored_date
 
     # id esistenti nel nostro vdb
-    stored_ids = load_stored_ids()
+    stored_ids = db_manager.load_stored_ids() #DATABASE
 
     
     current_ids = []
@@ -49,10 +52,14 @@ def return_mails():
         
 
     
-    save_ids(current_ids)
+    db_manager.save_ids(current_ids) #DATABASE
 
     
     if latest_relevant_date is not None and (stored_date is None or latest_relevant_date > stored_date):
-        setdate(latest_relevant_date)
+        db_manager.setdate(latest_relevant_date) #DATABASE
+    
+    db_manager.close() #DATABASE
+
+    #close_database(conn)
 
     return mails,deleted_ids,mailstot
