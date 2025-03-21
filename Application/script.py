@@ -1,8 +1,9 @@
-from embeddings import *
-from agentAI import *
-from gmail import *
-from writemails import *
-from QueryAdjustment import AdjustQuery
+from RAGsystem.embeddings import *
+from RAGsystem.agentAI import *
+from GoogleAPI.gmail import *
+from RAGsystem.writemails import *
+from RAGsystem.QueryAdjustment import AdjustQuery
+from setLocalEmails import return_mails
 import time
 
 def start(domanda,topk = 5,adjustquery = True):
@@ -28,11 +29,13 @@ queryiniziale = "ci sono visite mediche in programma per i dipendenti?"
 
 start(queryiniziale,5,True)
 
+# RICORDARSI DI CANCELLARE FAISS_INDEX E DB SE SI VUOLE RESTARTARE, SE NO OBV CARICA LE MAIL SULLO STESSO VDB
+
 #TODO: migliorare la gestione delle mail, adesso vengono scaricate tutte le mail ogni volta ma non so come risolvere cristoddio
 
-#TODO: mettere a posto file su db, dividerlo e trattare meglio la variabile del nome del db
+#TODO: mettere a posto file su db, dividerlo e trattare meglio la variabile del nome del db, inoltre mettere query di inserimento e lettura in un file a parte così se cambia db il codice non cambia
 
-# RICORDARSI DI CANCELLARE FAISS_INDEX E DB SE SI VUOLE RESTARTARE, SE NO OBV CARICA LE MAIL SULLO STESSO VDB
+
 
 
 

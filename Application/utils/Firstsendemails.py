@@ -4,9 +4,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
-from utils.GoogleColdStart import create_service
+from Application.GoogleAPI.GoogleColdStart import create_service
 
-from embeddings import *
+from Application.RAGsystem.embeddings import client
 
 
 def send_email(service, to, subject, body, body_type='plain', attachment_paths=None):

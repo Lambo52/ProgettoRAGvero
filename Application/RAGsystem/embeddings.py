@@ -17,11 +17,6 @@ embedding = OpenAIEmbeddings(model="text-embedding-3-small",openai_api_key=os.en
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 
-
-
-
-
-
 def generate_embeddings(emails,emaileliminate,emailtotali):
 
     no_splitter = RecursiveCharacterTextSplitter(

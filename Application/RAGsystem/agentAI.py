@@ -1,4 +1,4 @@
-from embeddings import *
+from RAGsystem.embeddings import client
 
 
 def query(query, vectorstore,queryaggiustata,k):

@@ -1,4 +1,4 @@
-from embeddings import *
+from RAGsystem.embeddings import client
 
 
 def generateEmail(rispostallm):
