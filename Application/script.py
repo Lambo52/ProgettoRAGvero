@@ -33,7 +33,7 @@ start(queryiniziale,5,True)
 
 #TODO: migliorare la gestione delle mail, adesso vengono scaricate tutte le mail ogni volta ma non so come risolvere cristoddio
 
-#TODO: mettere a posto file su db, dividerlo e trattare meglio la variabile del nome del db, inoltre mettere query di inserimento e lettura in un file a parte così se cambia db il codice non cambia
+#TODO: mettere a posto file su db con rispettive chiamate
 
 
 
