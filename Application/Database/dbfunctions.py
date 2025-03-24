@@ -23,8 +23,8 @@ class DBManager:
             date = parsedate_to_datetime(date)
         if date.tzinfo is None:
             date = date.replace(tzinfo=timezone.utc)
-        # Assicurati che la tabella esista
-        self.initialize_db()
+        
+        self.initialize_db() # da tenere assolutamente altrimenti db esplode
         # id è 1 tanto è solo quello
         self.cursor.execute('''
             INSERT OR REPLACE INTO stored_date (id, date) VALUES (1, ?)
@@ -65,8 +65,8 @@ class DBManager:
             return []
 
     def save_ids(self, ids):
-        # Assicurati che la tabella esista
-        self.initialize_mail_ids_table()
+        
+        self.initialize_mail_ids_table() # soluzione bruttissima, è come se ci fossero 2 init, però vabe
         # Pulizia della tabella
         self.cursor.execute('DELETE FROM mail_ids')
         for mail_id in ids:
