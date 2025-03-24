@@ -35,6 +35,10 @@ start(queryiniziale,5,True)
 
 #TODO: mettere a posto file su db, dividerlo e trattare meglio la variabile del nome del db, inoltre mettere query di inserimento e lettura in un file a parte così se cambia db il codice non cambia
 
+#TODO: inserire i metadati all'interno delle mail, come il mittente e la data, per poter fare query più specifiche
+
+#TODO: implementare HNSW con FAISS per poi fare ricerche di k in k (impossibile farlo con langchain, quindi farlo con flatl2 e bella)
+
 
 
 

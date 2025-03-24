@@ -38,8 +38,14 @@ def return_mails():
 
         # storing di mail aggiornate e totali in caso di eliminazione
         if stored_date is None or mail_date > stored_date:
-            mails.append(f"Oggetto: {details['subject']} Corpo: {details['body']}")
-        mailstot.append(f"Oggetto: {details['subject']} Corpo: {details['body']}")
+
+            #NUOVO QUA, CAMBIATO TUTTO, CONTINUARE
+            metadata = []
+            metadata.append(details['subject'])
+            metadata.append(details['sender'])
+            vettorelocale = [metadata,mails['body']]
+            mails.append(vettorelocale)
+        mailstot.append(vettorelocale)
             
         # funzione inutile ma ho paura a toglierla
         if latest_relevant_date is None or mail_date > latest_relevant_date:
