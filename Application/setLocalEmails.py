@@ -14,7 +14,7 @@ def return_mails():
     mailstot = []
 
     #conn = initialize_db() #DATABASE
-    db_manager = DBManager()
+    db_manager = DBManager() #DATABASE, CREA TABELLE SE NON ESISTONO
 
     stored_date = db_manager.get_stored_date() #DATABASE
     
@@ -35,19 +35,29 @@ def return_mails():
         mail_date = parsedate_to_datetime(details['date'])
         if mail_date.tzinfo is None:
             mail_date = mail_date.replace(tzinfo=timezone.utc)
+        
+        
+#        if stored_date is None or mail_date > stored_date:
+#            mails.append(f"Oggetto: {details['subject']} Corpo: {details['body']}")
+#        mailstot.append(f"Oggetto: {details['subject']} Corpo: {details['body']}")
+
+            
+        #NUOVO QUA, CAMBIATO TUTTO, CONTROLLARE
+        metadata = {
+            'subject': details['subject'],
+            'sender': details['sender']
+        }
+        vettorelocale = (details['body'],metadata)
 
         # storing di mail aggiornate e totali in caso di eliminazione
         if stored_date is None or mail_date > stored_date:
-
-            #NUOVO QUA, CAMBIATO TUTTO, CONTINUARE
-            metadata = []
-            metadata.append(details['subject'])
-            metadata.append(details['sender'])
-            vettorelocale = [metadata,mails['body']]
             mails.append(vettorelocale)
         mailstot.append(vettorelocale)
+        #così mail è una lista di liste, ogni lista contiene [metadata,body], metadata contiene [subject,sender]
+
+
             
-        # funzione inutile ma ho paura a toglierla
+        # funzione inutile ma ho paura a toglierla (no in realtà è utile, latest_relevannt_date serve perché dobbiamo fare il confronto per ogni mail, inoltre se non esistono mail ci serve per non salvare niente)
         if latest_relevant_date is None or mail_date > latest_relevant_date:
             latest_relevant_date = mail_date
 

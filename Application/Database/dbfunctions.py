@@ -8,6 +8,7 @@ class DBManager:
         self.db_file = 'date_storage.db'
         self.conn = sqlite3.connect(self.db_file)
         self.cursor = self.conn.cursor()
+        self.initialize_db()
 
     def initialize_db(self):
         self.cursor.execute('''
@@ -16,22 +17,15 @@ class DBManager:
                 date TEXT
             )
         ''')
-        self.conn.commit()
-
-    def setdate(self, date):  # NON TOCCARE NIENTE QUI
-        if isinstance(date, str):
-            date = parsedate_to_datetime(date)
-        if date.tzinfo is None:
-            date = date.replace(tzinfo=timezone.utc)
         
-        self.initialize_db() # da tenere assolutamente altrimenti db esplode
-        # id è 1 tanto è solo quello
         self.cursor.execute('''
-            INSERT OR REPLACE INTO stored_date (id, date) VALUES (1, ?)
-        ''', (date.isoformat(),))
+            CREATE TABLE IF NOT EXISTS mail_ids (
+                id TEXT PRIMARY KEY
+            )
+        ''')
         self.conn.commit()
-
-    def get_stored_date(self):  # NON TOCCARE NIENTE QUI
+#--------------------------------------------------------------------------
+    def get_stored_date(self):  # NON TOCCARE NIENTE QUI, TUTTO PERFETTO (CREDO)
         if not os.path.exists(self.db_file):
             return None
         try:
@@ -45,15 +39,7 @@ class DBManager:
             print(f"Errore lettura data salvata: {e}")
             return None
 
-    def initialize_mail_ids_table(self):
-        self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS mail_ids (
-                id TEXT PRIMARY KEY
-            )
-        ''')
-        self.conn.commit()
-
-    def load_stored_ids(self):
+    def load_stored_ids(self): #DOVREBBE ANDARE BENE
         if not os.path.exists(self.db_file):
             return []
         try:
@@ -66,12 +52,29 @@ class DBManager:
 
     def save_ids(self, ids):
         
-        self.initialize_mail_ids_table() # soluzione bruttissima, è come se ci fossero 2 init, però vabe
-        # Pulizia della tabella
+        if not os.path.exists(self.db_file):
+            return
+            
         self.cursor.execute('DELETE FROM mail_ids')
         for mail_id in ids:
             self.cursor.execute('INSERT INTO mail_ids (id) VALUES (?)', (mail_id,))
         self.conn.commit()
+
+
+    def setdate(self, date):  # NON TOCCARE NIENTE QUI
+        if not os.path.exists(self.db_file):
+            return
+
+        if isinstance(date, str):
+            date = parsedate_to_datetime(date)
+        if date.tzinfo is None:
+            date = date.replace(tzinfo=timezone.utc)
+
+        self.cursor.execute('''
+            INSERT OR REPLACE INTO stored_date (id, date) VALUES (1, ?)
+        ''', (date.isoformat(),))
+        self.conn.commit()
+
 
     def close(self):
         self.conn.close()

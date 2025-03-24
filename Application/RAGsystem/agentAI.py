@@ -13,11 +13,11 @@ def query(query, vectorstore,queryaggiustata,k):
     # similarity search
     results = vectorstore.similarity_search(queryaggiustata, k)
 
-    context = "\n\n".join([f"Mail {i+1}: {doc.page_content}" for i, doc in enumerate(results)])
+    context = "\n\n".join([f"Mail {i+1}: {doc.page_content}\n{doc.metadata}" for i, doc in enumerate(results)])
 
     print("\n--- MAIL DI RIFERIMENTO ---")
     for i, doc in enumerate(results):
-        print(f"Mail {i+1}:\n{doc.page_content}")
+        print(f"Mail {i+1}:\n{doc.page_content}\n{doc.metadata}")
     
     return context,query
 

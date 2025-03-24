@@ -23,9 +23,9 @@ def generate_embeddings(emails,emaileliminate,emailtotali):
     chunk_size=10000,  # se arriva una mail più lunga di 10000 caratteri non ha senso
     chunk_overlap=0
     )
-
-    base_documents = [Document(page_content=email) for email in emails]
-
+    #così mail è una lista di liste, ogni lista contiene [metadata,body], metadata contiene [subject,sender]
+    #base_documents = [Document(page_content=email[1]) for email in emails] #1 perché body
+    base_documents = [Document(page_content=email[0],metadata=email[1]) for email in emails] #0 perché body, 1 perhé metadata
     split_docs = no_splitter.split_documents(base_documents)
 
     if os.path.exists("faiss_index"):
@@ -37,7 +37,8 @@ def generate_embeddings(emails,emaileliminate,emailtotali):
             vectorstore.add_documents(split_docs)
         if emaileliminate:
             print("ci sono emails eliminate, riscrittura dell'indice in corso")
-            base_documents = [Document(page_content=email) for email in emailtotali]
+            #base_documents = [Document(page_content=email) for email in emailtotali]
+            base_documents = [Document(page_content=email[0],metadata=email[1]) for email in emails] #0 perché body, 1 perhé metadata
             split_docs = no_splitter.split_documents(base_documents)
             vectorstore = FAISS.from_documents(documents=split_docs, embedding=embedding)
     else:
