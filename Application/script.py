@@ -8,7 +8,7 @@ from setLocalEmails import return_mails
 from RAGsystem.IterativeK import iterativek
 import time
 
-def start(domanda,topk = 5,adjustquery = True, mode2 = False):
+def start(domanda,topk = 5,adjustquery = True, llmevaluation = False):
 
     emails,emaileliminate,mailtotali = return_mails()
 
@@ -21,9 +21,9 @@ def start(domanda,topk = 5,adjustquery = True, mode2 = False):
     else:
         queryadjusted = domanda
     
-    if mode2:
+    if llmevaluation:
         #pass
-        results = iterativek(domanda,vectorstore,queryadjusted)#qua devo prendere i primi 5, se sono rilevanti ne prendo altri 5 e così via, chiamo da qua la funzione query, e serve la domanda per la valutazione
+        results = iterativek(domanda,vectorstore,queryadjusted,topk)#qua devo prendere i primi 5, se sono rilevanti ne prendo altri 5 e così via, chiamo da qua la funzione query, e serve la domanda per la valutazione
     else:
         results = query(vectorstore,queryadjusted,topk)
 
@@ -34,9 +34,9 @@ def start(domanda,topk = 5,adjustquery = True, mode2 = False):
     generateEmail(risposta)
 
 
-queryiniziale = "ci sono visite mediche in programma per i dipendenti?"
+queryiniziale = "ci sono visite mediche per i dipendenti?"
 
-start(queryiniziale,topk=5,adjustquery=True,mode2=True)
+start(queryiniziale,topk=3,adjustquery=True,llmevaluation=True)
 
 # RICORDARSI DI CANCELLARE FAISS_INDEX E DB SE SI VUOLE RESTARTARE, SE NO OBV CARICA LE MAIL SULLO STESSO VDB
 

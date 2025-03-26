@@ -29,8 +29,8 @@ def contextevaluationllm(context, query):
 
 
 
-def iterativek(domanda,vectorstore,queryadjusted):
-    k = 3
+def iterativek(domanda,vectorstore,queryadjusted,k):
+    aumento = k
     contexttotale = []
 
     results = query(vectorstore,queryadjusted,k,False)
@@ -48,12 +48,13 @@ def iterativek(domanda,vectorstore,queryadjusted):
     #print(contexttotale)
 
     while 1 in vettorebitmap:
-        k+=3
+        k+=aumento
         if k > 20:
             break
         
         results = query(vectorstore,queryadjusted,k,False)
-        contextlocale = "\n\n".join([f"Mail {i+1}: {doc.page_content}\n{doc.metadata}" for i, doc in enumerate(results[-3:])])
+        results = results[-aumento:]
+        contextlocale = "\n\n".join([f"Mail {i+1}: {doc.page_content}\n{doc.metadata}" for i, doc in enumerate(results)])
         rispostallm = contextevaluationllm(contextlocale, domanda)
         vettorebitmap = [int(i) for i in rispostallm.split()]
         print(vettorebitmap)
