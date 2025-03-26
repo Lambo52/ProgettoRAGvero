@@ -1,11 +1,13 @@
-from RAGsystem.Search import query
-from RAGsystem.embeddings import client
-
+from RAGsystem.Search import *
+from RAGsystem.embeddings import client, embedding
+#from langchain_community.vectorstores import FAISS
+from RAGsystem.embeddings import *
 
 def contextevaluationllm(context, query):
         
     system_prompt = """Sei un assistente specializzato nell'analisi di email. 
-    Devi dire se ci sono documenti rilevanti per la domanda posta, non rispondere alla domanda, il tuo unico scopo è scrivere se ci sono documenti rilevanti o no e se ci sono dire quali documenti.rispondi con "no" o con i documenti rilevanti, se ad esempio i documenti rilevanti sono il primo e il terzo dovrai scrivere "1,3" e basta."""
+    Devi dire per ogni mail se risponde o no alla domanda posta, il tuo unico scopo è scrivere se ci sono mail rilevanti o no.
+    rispondi con "0" se la mail non è rilevante, con "1" se lo è, non aver paura di dire che nessun documento è rilevante, se ad esempio i documenti rilevanti sono il primo e il terzo dovrai scrivere "1 0 1 0 0" e basta."""
     
     response = client.chat.completions.create(
         messages=[
@@ -18,27 +20,57 @@ def contextevaluationllm(context, query):
     )
     
     # risultati rag
-    print("\n--- DOMANDA POSTA ---")
-    print(query)
-    print("\n--- RISPOSTA GENERATA --- modello " + str(response.model))
-    print(response.choices[0].message.content)
+    #print("\n--- DOMANDA POSTA ---")
+    #print(query)
+    #print("\n--- RISPOSTA GENERATA --- modello " + str(response.model))
+    #print(response.choices[0].message.content)
     
     return response.choices[0].message.content
 
 
 
 def iterativek(domanda,vectorstore,queryadjusted):
-    k = 5
-    contexttotale = ""
+    k = 3
+    contexttotale = []
 
-    context = query(domanda, vectorstore,k)
+    results = query(vectorstore,queryadjusted,k,False)
+    contextlocale = "\n\n".join([f"Mail {i+1}: {doc.page_content}\n{doc.metadata}" for i, doc in enumerate(results)])
+    contextbackup = results
+    rispostallm = contextevaluationllm(contextlocale, domanda)
+    #print(rispostallm)
 
-    while contextevaluationllm(context,queryadjusted) != "no" or contextevaluationllm(context,queryadjusted) != "No":
-        k += 5
-        context = query(context, vectorstore,k)
-        context = context[4:]
+    vettorebitmap = [int(i) for i in rispostallm.split()]
+    print(vettorebitmap)
 
+    for i,elemento in enumerate(vettorebitmap):
+        if elemento == 1:
+            contexttotale.append(results[i])
+    #print(contexttotale)
+
+    while 1 in vettorebitmap:
+        k+=3
+        if k > 20:
+            break
+        
+        results = query(vectorstore,queryadjusted,k,False)
+        contextlocale = "\n\n".join([f"Mail {i+1}: {doc.page_content}\n{doc.metadata}" for i, doc in enumerate(results[-3:])])
+        rispostallm = contextevaluationllm(contextlocale, domanda)
+        vettorebitmap = [int(i) for i in rispostallm.split()]
+        print(vettorebitmap)
+        for i,elemento in enumerate(vettorebitmap):
+            if elemento == 1:
+                contexttotale.append(results[i])
     
-    return None, 
+    print("\n--- MAIL DI RIFERIMENTO PER ITERATIVE ---")
+    for i, doc in enumerate(contexttotale):
+        print(f"\n\nMail {i+1}:\n{doc.page_content}\n{doc.metadata}")
+    
+    if len(contexttotale) == 0:
+        contexttotale = contextbackup
+    
+    return contexttotale
 
-iterativek("visite mediche dipendenti",lesgoooooooooooooooo,"visite mediche dipendenti")
+
+
+#vectorstore = vectorstore = FAISS.load_local("faiss_index", embeddings=embedding,allow_dangerous_deserialization=True)
+#iterativek("ci sono visite mediche in programma per i dipendenti?",vectorstore,"Visite mediche dipendenti")

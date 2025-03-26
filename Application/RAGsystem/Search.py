@@ -1,6 +1,6 @@
 
 
-def query(query, vectorstore,queryaggiustata,k):
+def query(vectorstore,queryaggiustata,k,stampa=True):
 
     
     """vectorstore = FAISS.load_local(
@@ -14,9 +14,9 @@ def query(query, vectorstore,queryaggiustata,k):
 
     #riga sacra, ma ci serve dopo
     #context = "\n\n".join([f"Mail {i+1}: {doc.page_content}\n{doc.metadata}" for i, doc in enumerate(results)])
-
-    print("\n--- MAIL DI RIFERIMENTO ---")
-    for i, doc in enumerate(results):
-        print(f"Mail {i+1}:\n{doc.page_content}\n{doc.metadata}")
+    if stampa:
+        print("\n--- MAIL DI RIFERIMENTO ---")
+        for i, doc in enumerate(results):
+            print(f"Mail {i+1}:\n{doc.page_content}\n{doc.metadata}")
     
     return results

@@ -22,9 +22,10 @@ def start(domanda,topk = 5,adjustquery = True, mode2 = False):
         queryadjusted = domanda
     
     if mode2:
-        results = iterativek(domanda,vectorstore,queryadjusted)#qua devo prendere i primi 5, opi se sono rilevanti ne prendo altri 5 e così via, chiamo da qua la funzione query
+        #pass
+        results = iterativek(domanda,vectorstore,queryadjusted)#qua devo prendere i primi 5, se sono rilevanti ne prendo altri 5 e così via, chiamo da qua la funzione query, e serve la domanda per la valutazione
     else:
-        results = query(domanda,vectorstore,queryadjusted,topk)
+        results = query(vectorstore,queryadjusted,topk)
 
     context = "\n\n".join([f"Mail {i+1}: {doc.page_content}\n{doc.metadata}" for i, doc in enumerate(results)])
     
@@ -35,7 +36,7 @@ def start(domanda,topk = 5,adjustquery = True, mode2 = False):
 
 queryiniziale = "ci sono visite mediche in programma per i dipendenti?"
 
-start(queryiniziale,topk=5,adjustquery=True,mode2=False)
+start(queryiniziale,topk=5,adjustquery=True,mode2=True)
 
 # RICORDARSI DI CANCELLARE FAISS_INDEX E DB SE SI VUOLE RESTARTARE, SE NO OBV CARICA LE MAIL SULLO STESSO VDB
 
