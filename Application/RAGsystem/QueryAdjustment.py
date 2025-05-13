@@ -9,13 +9,13 @@ def AdjustQuery(query):
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": query}
         ],
-        model="llama3-8b-8192", #siamo sull'8b
+        model="qwen-qwq-32b",
         temperature=0.1,
         max_tokens=1024
     )
     
-    print("query riscritta: ", response.choices[0].message.content)
-    return response.choices[0].message.content
+    print("query riscritta: ", response.choices[0].message.content.split("</think>")[1].strip())
+    return response.choices[0].message.content.split("</think>")[1].strip()
 
 
 

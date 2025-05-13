@@ -12,7 +12,7 @@ def query_with_llm(context, query):
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": f"Contesto:\n{context}\n\nDomanda: {query}"}
         ],
-        model="llama3-8b-8192", #siamo sull'8b
+        model="qwen-qwq-32b",
         temperature=0.5,
         max_tokens=1024
     )
@@ -21,8 +21,8 @@ def query_with_llm(context, query):
     print("\n--- DOMANDA POSTA ---")
     print(query)
     print("\n--- RISPOSTA GENERATA --- modello " + str(response.model))
-    print(response.choices[0].message.content)
+    print(response.choices[0].message.content.split("</think>")[1].strip())
     
-    return response.choices[0].message.content
+    return response.choices[0].message.content.split("</think>")[1].strip()
 
 

@@ -35,7 +35,7 @@ def start(domanda,topk = 5,adjustquery = True, llmevaluation = False):
 
 
 #queryiniziale = "sono presenti mail della tavola rotonda sull'intelligenza artificiale?"
-#queryiniziale = "ci sono mail che parlano di blockchain o di corsi sulla blockchain?"
+queryiniziale = "ci sono mail che parlano di blockchain o di corsi sulla blockchain?"
 #queryiniziale = "c'è qualche convegno sulla sicurezza informatica in programma?"
 #queryiniziale = "è presente qualche adeguamento al gdpr?"
 #queryiniziale = "cosa comporta la chiusura dell'anno fiscale?"
@@ -48,9 +48,9 @@ def start(domanda,topk = 5,adjustquery = True, llmevaluation = False):
 #queryiniziale = "come procede il progetto alpha?"
 #queryiniziale = "ci sono mail urgenti?"
 #queryiniziale = "com'è il clima aziendale?"
-queryiniziale = "ci sono mail riguardanti l'ambiente di lavoro in azienda?"
+#queryiniziale = "ci sono mail riguardanti l'ambiente di lavoro in azienda?"
 
-start(queryiniziale,topk=5,adjustquery=True,llmevaluation=False)
+start(queryiniziale,topk=3,adjustquery=True,llmevaluation=True)
 
 # RICORDARSI DI CANCELLARE FAISS_INDEX E DB SE SI VUOLE RESTARTARE, SE NO OBV CARICA LE MAIL SULLO STESSO VDB
 

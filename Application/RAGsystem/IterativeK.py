@@ -14,7 +14,7 @@ def contextevaluationllm(context, query, aumento):
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": f"Contesto:\n{context}\n\nDomanda: {query}"}
         ],
-        model="llama3-8b-8192", #sempre 8b
+        model="qwen-qwq-32b",
         temperature=0.1,
         max_tokens=1024
     )
@@ -39,7 +39,7 @@ def iterativek(domanda,vectorstore,queryadjusted,k):
     rispostallm = contextevaluationllm(contextlocale, domanda, aumento)
     #print(rispostallm)
 
-    vettorebitmap = [int(i) for i in rispostallm.split()]
+    vettorebitmap = [int(i) for i in rispostallm.split("</think>")[1].split()]
     print(vettorebitmap)
 
     for i,elemento in enumerate(vettorebitmap):
@@ -56,7 +56,7 @@ def iterativek(domanda,vectorstore,queryadjusted,k):
         results = results[-aumento:]
         contextlocale = "\n\n".join([f"Mail {i+1}: {doc.page_content}\n{doc.metadata}" for i, doc in enumerate(results)])
         rispostallm = contextevaluationllm(contextlocale, domanda,aumento)
-        vettorebitmap = [int(i) for i in rispostallm.split()]
+        vettorebitmap = [int(i) for i in rispostallm.split("</think>")[1].split()]
         print(vettorebitmap)
         for i,elemento in enumerate(vettorebitmap):
             if elemento == 1:
