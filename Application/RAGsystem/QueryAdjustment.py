@@ -2,7 +2,7 @@ from RAGsystem.embeddings import client
 
 def AdjustQuery(query):    
     
-    system_prompt = """Sei un assistente specializzato nel rendere una query migliore per la ricerca sui documenti, ti verrà dato in input una query e dovrai riscriverla per renderla più efficace basandoti esclusivamente sul contesto fornito. dovrai rispondere in questo modo: <query riscritta da te>. non aggiungere altro al messaggio, scrivi in italiano"""
+    system_prompt = """Sei un assistente specializzato nel rendere una query migliore per la ricerca sulle mail, ti verrà dato in input una query e dovrai riscriverla per renderla più efficace basandoti esclusivamente sul contesto fornito. dovrai rispondere in questo modo: <query riscritta da te>. non aggiungere altro al messaggio, scrivi in italiano"""
     
     response = client.chat.completions.create(
         messages=[
