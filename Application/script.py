@@ -34,9 +34,9 @@ def start(domanda,topk = 5,adjustquery = True, llmevaluation = False):
     generateEmail(risposta)
 
 
-queryiniziale = "c'è qualche mail riguardante le condizioni di lavoro?"
+queryiniziale = "sono presenti mail della tavola rotonda sull'intelligenza artificiale?"
 
-start(queryiniziale,topk=3,adjustquery=True,llmevaluation=True)
+start(queryiniziale,topk=5,adjustquery=True,llmevaluation=False)
 
 # RICORDARSI DI CANCELLARE FAISS_INDEX E DB SE SI VUOLE RESTARTARE, SE NO OBV CARICA LE MAIL SULLO STESSO VDB
 

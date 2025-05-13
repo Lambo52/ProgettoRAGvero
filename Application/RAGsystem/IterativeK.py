@@ -3,11 +3,11 @@ from RAGsystem.embeddings import client, embedding
 #from langchain_community.vectorstores import FAISS
 from RAGsystem.embeddings import *
 
-def contextevaluationllm(context, query):
+def contextevaluationllm(context, query, aumento):
         
-    system_prompt = """Sei un assistente specializzato nell'analisi di email. 
+    system_prompt = f"""Sei un assistente specializzato nell'analisi di email. 
     Devi dire per ogni mail se risponde o no alla domanda posta, il tuo unico scopo è scrivere se ci sono mail rilevanti o no.
-    rispondi con "0" se la mail non è rilevante, con "1" se lo è, non aver paura di dire che nessun documento è rilevante, se ad esempio i documenti rilevanti sono il primo e il terzo e ci sono 5 documenti totali, dovrai scrivere "1 0 1 0 0" e basta."""
+    rispondi con "0" se la mail non è rilevante, con "1" se lo è, non aver paura di dire che nessun documento è rilevante, se ad esempio i documenti rilevanti sono il primo e il terzo e ci sono 3 documenti totali, dovrai scrivere "1 0 1" e basta. Mi raccomando di non aggiungere altro al messaggio, non scrivere "le mail rilevanti sono la 1 e la 3" o cose simili, ma solo "1 0 1". in questo caso ci sono {aumento} documenti, quindi dovrai scrivere {aumento} numeri."""
     
     response = client.chat.completions.create(
         messages=[
@@ -36,7 +36,7 @@ def iterativek(domanda,vectorstore,queryadjusted,k):
     results = query(vectorstore,queryadjusted,k,False)
     contextlocale = "\n\n".join([f"Mail {i+1}: {doc.page_content}\n{doc.metadata}" for i, doc in enumerate(results)])
     contextbackup = results
-    rispostallm = contextevaluationllm(contextlocale, domanda)
+    rispostallm = contextevaluationllm(contextlocale, domanda, aumento)
     #print(rispostallm)
 
     vettorebitmap = [int(i) for i in rispostallm.split()]
@@ -55,7 +55,7 @@ def iterativek(domanda,vectorstore,queryadjusted,k):
         results = query(vectorstore,queryadjusted,k,False)
         results = results[-aumento:]
         contextlocale = "\n\n".join([f"Mail {i+1}: {doc.page_content}\n{doc.metadata}" for i, doc in enumerate(results)])
-        rispostallm = contextevaluationllm(contextlocale, domanda)
+        rispostallm = contextevaluationllm(contextlocale, domanda,aumento)
         vettorebitmap = [int(i) for i in rispostallm.split()]
         print(vettorebitmap)
         for i,elemento in enumerate(vettorebitmap):
