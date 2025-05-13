@@ -34,7 +34,7 @@ def start(domanda,topk = 5,adjustquery = True, llmevaluation = False):
     generateEmail(risposta)
 
 
-queryiniziale = "ci sono visite mediche per i dipendenti?"
+queryiniziale = "c'è qualche mail riguardante le condizioni di lavoro?"
 
 start(queryiniziale,topk=3,adjustquery=True,llmevaluation=True)
 

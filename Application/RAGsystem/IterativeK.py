@@ -7,7 +7,7 @@ def contextevaluationllm(context, query):
         
     system_prompt = """Sei un assistente specializzato nell'analisi di email. 
     Devi dire per ogni mail se risponde o no alla domanda posta, il tuo unico scopo è scrivere se ci sono mail rilevanti o no.
-    rispondi con "0" se la mail non è rilevante, con "1" se lo è, non aver paura di dire che nessun documento è rilevante, se ad esempio i documenti rilevanti sono il primo e il terzo dovrai scrivere "1 0 1 0 0" e basta."""
+    rispondi con "0" se la mail non è rilevante, con "1" se lo è, non aver paura di dire che nessun documento è rilevante, se ad esempio i documenti rilevanti sono il primo e il terzo e ci sono 5 documenti totali, dovrai scrivere "1 0 1 0 0" e basta."""
     
     response = client.chat.completions.create(
         messages=[
