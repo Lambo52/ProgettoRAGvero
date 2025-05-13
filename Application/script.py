@@ -34,7 +34,21 @@ def start(domanda,topk = 5,adjustquery = True, llmevaluation = False):
     generateEmail(risposta)
 
 
-queryiniziale = "sono presenti mail della tavola rotonda sull'intelligenza artificiale?"
+#queryiniziale = "sono presenti mail della tavola rotonda sull'intelligenza artificiale?"
+#queryiniziale = "ci sono mail che parlano di blockchain o di corsi sulla blockchain?"
+#queryiniziale = "c'è qualche convegno sulla sicurezza informatica in programma?"
+#queryiniziale = "è presente qualche adeguamento al gdpr?"
+#queryiniziale = "cosa comporta la chiusura dell'anno fiscale?"
+#queryiniziale = "c'è qualche mail riguardante l'ufficio personale?"
+#queryiniziale = "sono previste visite mediche aziendali?"
+#queryiniziale = "ci sono novità per quanto riguarda il contratto di affitto?"
+#queryiniziale = "è stato aperto un ticket per un problema?"
+#queryiniziale = "c'è qualche corso di preparazione per excel?"
+#queryiniziale = "avrei bisogno di un tagliaerba, ci sono offerte?"
+#queryiniziale = "come procede il progetto alpha?"
+#queryiniziale = "ci sono mail urgenti?"
+#queryiniziale = "com'è il clima aziendale?"
+queryiniziale = "ci sono mail riguardanti l'ambiente di lavoro in azienda?"
 
 start(queryiniziale,topk=5,adjustquery=True,llmevaluation=False)
 
