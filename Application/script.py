@@ -31,11 +31,27 @@ def start(domanda,topk = 5,adjustquery = True, llmevaluation = False):
     
     risposta = query_with_llm(context, domanda)
 
-    generateEmail(risposta)
+    #generateEmail(risposta)
 
+
+evaluation = ["sono presenti mail della tavola rotonda sull'intelligenza artificiale?",#iterative ok/ok, topk ok
+             "ci sono mail che parlano di blockchain o di corsi sulla blockchain?",#iterative ok/ok, topk ok
+             "c'è qualche convegno sulla sicurezza informatica in programma?", #iterative sbagliato/sbagliato, topk ok
+             "è presente qualche adeguamento al gdpr?",#iterative ok/ok, topk ok
+             "cosa comporta la chiusura dell'anno fiscale?",#iterative ok/sbagliato, topk ok 
+             "c'è qualche mail riguardante l'ufficio personale?",#iterative ok/ok, topk ok
+             "sono previste visite mediche aziendali?",#iterative ok/ok, topk ok
+             "ci sono novità per quanto riguarda il contratto di affitto?",#iterative ok/ok, topk ok
+             "è stato aperto un ticket per un problema?",#iterative sbagliato/ok, topk ok
+             "c'è qualche corso di preparazione per excel?",#iterative ok, topk ok
+             "avrei bisogno di un tagliaerba, ci sono offerte?",#iterative ok, topk ok
+             "come procede il progetto alpha?",#iterative ok, topk ok
+             "ci sono mail urgenti?",#iterative ok, topk più o meno ok
+             "com'è il clima aziendale?",#iterative sbagliato, topk ok
+             "ci sono mail riguardanti l'ambiente di lavoro in azienda?"]#iterative ok, topk ok
 
 #queryiniziale = "sono presenti mail della tavola rotonda sull'intelligenza artificiale?"
-queryiniziale = "ci sono mail che parlano di blockchain o di corsi sulla blockchain?"
+#queryiniziale = "ci sono mail che parlano di blockchain o di corsi sulla blockchain?"
 #queryiniziale = "c'è qualche convegno sulla sicurezza informatica in programma?"
 #queryiniziale = "è presente qualche adeguamento al gdpr?"
 #queryiniziale = "cosa comporta la chiusura dell'anno fiscale?"
@@ -46,11 +62,16 @@ queryiniziale = "ci sono mail che parlano di blockchain o di corsi sulla blockch
 #queryiniziale = "c'è qualche corso di preparazione per excel?"
 #queryiniziale = "avrei bisogno di un tagliaerba, ci sono offerte?"
 #queryiniziale = "come procede il progetto alpha?"
-#queryiniziale = "ci sono mail urgenti?"
+queryiniziale = "ci sono mail urgenti?"
 #queryiniziale = "com'è il clima aziendale?"
 #queryiniziale = "ci sono mail riguardanti l'ambiente di lavoro in azienda?"
 
-start(queryiniziale,topk=3,adjustquery=True,llmevaluation=True)
+#for queryiniziale in evaluation:
+
+#start(queryiniziale,topk=3,adjustquery=True,llmevaluation=True)
+#start(queryiniziale,topk=5,adjustquery=True,llmevaluation=False)
+#start(queryiniziale,topk=5,adjustquery=False,llmevaluation=False)
+#start(queryiniziale,topk=5,adjustquery=False,llmevaluation=True)
 
 # RICORDARSI DI CANCELLARE FAISS_INDEX E DB SE SI VUOLE RESTARTARE, SE NO OBV CARICA LE MAIL SULLO STESSO VDB
 

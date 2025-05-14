@@ -11,8 +11,10 @@ def AdjustQuery(query):
         ],
         model="qwen-qwq-32b",
         temperature=0.1,
-        max_tokens=1024
+        max_tokens=2048
     )
+
+    print("Risposta generata: ", response.choices[0].message.content)
     
     print("query riscritta: ", response.choices[0].message.content.split("</think>")[1].strip())
     return response.choices[0].message.content.split("</think>")[1].strip()

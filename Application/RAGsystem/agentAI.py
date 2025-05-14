@@ -14,7 +14,7 @@ def query_with_llm(context, query):
         ],
         model="qwen-qwq-32b",
         temperature=0.5,
-        max_tokens=1024
+        max_tokens=2048
     )
     
     # risultati rag

@@ -16,7 +16,7 @@ def contextevaluationllm(context, query, aumento):
         ],
         model="qwen-qwq-32b",
         temperature=0.1,
-        max_tokens=1024
+        max_tokens=2048
     )
     
     # risultati rag
@@ -37,9 +37,10 @@ def iterativek(domanda,vectorstore,queryadjusted,k):
     contextlocale = "\n\n".join([f"Mail {i+1}: {doc.page_content}\n{doc.metadata}" for i, doc in enumerate(results)])
     contextbackup = results
     rispostallm = contextevaluationllm(contextlocale, domanda, aumento)
-    #print(rispostallm)
+    print(rispostallm)
+    rispostaaggiustata = rispostallm.split("</think>")[1].strip()
 
-    vettorebitmap = [int(i) for i in rispostallm.split("</think>")[1].split()]
+    vettorebitmap = [int(i) for i in rispostaaggiustata.split()]
     print(vettorebitmap)
 
     for i,elemento in enumerate(vettorebitmap):
@@ -56,7 +57,9 @@ def iterativek(domanda,vectorstore,queryadjusted,k):
         results = results[-aumento:]
         contextlocale = "\n\n".join([f"Mail {i+1}: {doc.page_content}\n{doc.metadata}" for i, doc in enumerate(results)])
         rispostallm = contextevaluationllm(contextlocale, domanda,aumento)
-        vettorebitmap = [int(i) for i in rispostallm.split("</think>")[1].split()]
+        rispostaaggiustata = rispostallm.split("</think>")[1].strip()
+        print(rispostallm)
+        vettorebitmap = [int(i) for i in rispostaaggiustata.split()]
         print(vettorebitmap)
         for i,elemento in enumerate(vettorebitmap):
             if elemento == 1:
