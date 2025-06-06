@@ -8,7 +8,7 @@ from setLocalEmails import return_mails
 from RAGsystem.IterativeK import iterativek
 import time
 
-def start(domanda,topk = 5,adjustquery = True, llmevaluation = False):
+def start(domanda,topk = 5,adjustquery = True, llmevaluation = False, answer = True):
 
     emails,emaileliminate,mailtotali = return_mails()
 
@@ -29,10 +29,13 @@ def start(domanda,topk = 5,adjustquery = True, llmevaluation = False):
 
     context = "\n\n".join([f"Mail {i+1}: {doc.page_content}\n{doc.metadata}" for i, doc in enumerate(results)])
     
+    
     risposta = query_with_llm(context, domanda)
 
-    #generateEmail(risposta)
-
+    if answer:
+        generateEmail(risposta)
+    else:
+        pass
 
 evaluation = ["sono presenti mail della tavola rotonda sull'intelligenza artificiale?",#iterative ok/ok, topk ok
              "ci sono mail che parlano di blockchain o di corsi sulla blockchain?",#iterative ok/ok, topk ok
@@ -68,7 +71,7 @@ queryiniziale = "ci sono mail urgenti?"
 
 #for queryiniziale in evaluation:
 
-start(queryiniziale,topk=3,adjustquery=True,llmevaluation=True)
+start(queryiniziale,topk=3,adjustquery=True,llmevaluation=True, answer=False)
 #start(queryiniziale,topk=5,adjustquery=True,llmevaluation=False)
 #start(queryiniziale,topk=5,adjustquery=False,llmevaluation=False)
 #start(queryiniziale,topk=5,adjustquery=False,llmevaluation=True)
