@@ -15,7 +15,7 @@ def generateEmail(rispostallm):
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": f"Contesto:\n{rispostallm}\n\nDomanda: {risposta}"}
         ],
-        model="llama3-8b-8192", #TODO: cambiare qua
+        model="llama-3.1-8b-instant",
         temperature=0.5,
         max_tokens=1024
     )

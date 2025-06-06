@@ -80,8 +80,6 @@ start(queryiniziale,topk=3,adjustquery=True,llmevaluation=True, answer=False)
 
 #TODO: controllare metadati dato che è andato tutto al primo tentativo
 
-#TODO: implementare HNSW con FAISS per poi fare ricerche di k in k (impossibile farlo con langchain, quindi farlo con flatl2 e bella)
-
 #TODO: migliorare la gestione delle mail, adesso vengono scaricate tutte le mail ogni volta ma non so come risolvere cristoddio
 
 
