@@ -78,6 +78,8 @@ start(queryiniziale,topk=3,adjustquery=True,llmevaluation=True, answer=False)
 
 # RICORDARSI DI CANCELLARE FAISS_INDEX E DB SE SI VUOLE RESTARTARE, SE NO OBV CARICA LE MAIL SULLO STESSO VDB
 
+#TODO: controllare meglio il file embeddings, se ci sono mail eliminate e nuove deve essere un caso, fare i casi 1 per 1
+
 #TODO: controllare metadati dato che è andato tutto al primo tentativo
 
 #TODO: migliorare la gestione delle mail, adesso vengono scaricate tutte le mail ogni volta ma non so come risolvere cristoddio
