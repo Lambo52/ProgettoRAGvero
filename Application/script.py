@@ -71,7 +71,7 @@ queryiniziale = "ci sono mail urgenti?"
 
 #for queryiniziale in evaluation:
 
-start(queryiniziale,topk=3,adjustquery=True,llmevaluation=True, answer=False)
+start(queryiniziale,topk=5,adjustquery=True,llmevaluation=False, answer=False)
 #start(queryiniziale,topk=5,adjustquery=True,llmevaluation=False)
 #start(queryiniziale,topk=5,adjustquery=False,llmevaluation=False)
 #start(queryiniziale,topk=5,adjustquery=False,llmevaluation=True)
