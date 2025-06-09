@@ -23,7 +23,7 @@ def start(domanda,topk = 5,adjustquery = True, llmevaluation = False, answer = T
     
     if llmevaluation:
         #pass
-        results = iterativek(domanda,vectorstore,queryadjusted,topk)#qua devo prendere i primi 5, se sono rilevanti ne prendo altri 5 e così via, chiamo da qua la funzione query, e serve la domanda per la valutazione
+        results = iterativek(domanda,vectorstore,queryadjusted,topk)#qua devo prendere i primi k, se sono rilevanti ne prendo altri k e così via, chiamo da qua la funzione query, e serve la domanda per la valutazione
     else:
         results = query(vectorstore,queryadjusted,topk)
 
@@ -78,7 +78,6 @@ start(queryiniziale,topk=3,adjustquery=True,llmevaluation=True, answer=False)
 
 # RICORDARSI DI CANCELLARE FAISS_INDEX E DB SE SI VUOLE RESTARTARE, SE NO OBV CARICA LE MAIL SULLO STESSO VDB
 
-#TODO: controllare meglio il file embeddings, se ci sono mail eliminate e nuove deve essere un caso, fare i casi 1 per 1
 
 #TODO: controllare metadati dato che è andato tutto al primo tentativo
 

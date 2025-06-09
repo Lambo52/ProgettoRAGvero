@@ -25,25 +25,31 @@ def generate_embeddings(emails,emaileliminate,emailtotali):
     )
     #così mail è una lista di liste, ogni lista contiene [metadata,body], metadata contiene [subject,sender]
     #base_documents = [Document(page_content=email[1]) for email in emails] #1 perché body
-    base_documents = [Document(page_content=email[0],metadata=email[1]) for email in emails] #0 perché body, 1 perhé metadata
-    split_docs = no_splitter.split_documents(base_documents)
+
 
     if os.path.exists("faiss_index"):
         # carichiamo indice esistente che tanto so per certo che esiste
         vectorstore = FAISS.load_local("faiss_index", embeddings=embedding,allow_dangerous_deserialization=True)
         # aggiungo e tolgo mail se necessario
-        if emails:
-            print("ci sono nuove emails, aggiorno l'indice")
-            vectorstore.add_documents(split_docs)
+        
         if emaileliminate:
             print("ci sono emails eliminate, riscrittura dell'indice in corso")
             #base_documents = [Document(page_content=email) for email in emailtotali]
+            base_documents = [Document(page_content=email[0],metadata=email[1]) for email in emailtotali] #0 perché body, 1 perhé metadata
+            split_docs = no_splitter.split_documents(base_documents)
+            vectorstore = FAISS.from_documents(documents=split_docs, embedding=embedding)        
+        
+        elif emails:
+            print("ci sono nuove emails, aggiorno l'indice")
             base_documents = [Document(page_content=email[0],metadata=email[1]) for email in emails] #0 perché body, 1 perhé metadata
             split_docs = no_splitter.split_documents(base_documents)
-            vectorstore = FAISS.from_documents(documents=split_docs, embedding=embedding)
+            vectorstore.add_documents(split_docs)
+
     else:
         # lo creo se non esiste
         print("creazione indice")
+        base_documents = [Document(page_content=email[0],metadata=email[1]) for email in emailtotali] #0 perché body, 1 perhé metadata
+        split_docs = no_splitter.split_documents(base_documents)    
         vectorstore = FAISS.from_documents(documents=split_docs, embedding=embedding)
     
     vectorstore.save_local("faiss_index")

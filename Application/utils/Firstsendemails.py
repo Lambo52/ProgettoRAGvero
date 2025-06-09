@@ -61,7 +61,7 @@ def send_email_llm():
         ],
         model="qwen-2.5-32b", #qwen per generazione mail
         temperature=0.5,
-        max_tokens=1024
+        max_tokens=2048
     )
     
     # Stampa risultati

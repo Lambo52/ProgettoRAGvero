@@ -27,6 +27,7 @@ def return_mails():
     
     current_ids = []
 
+
     for msg in reversed(messages):
         details = get_email_message_details(service, msg['id'])
         current_ids.append(msg['id'])
@@ -52,6 +53,7 @@ def return_mails():
         # storing di mail aggiornate e totali in caso di eliminazione
         if stored_date is None or mail_date > stored_date:
             mails.append(vettorelocale)
+
         mailstot.append(vettorelocale)
         #così mail è una lista di liste, ogni lista contiene [metadata,body], metadata contiene [subject,sender]
 
@@ -65,9 +67,7 @@ def return_mails():
     
     deleted_ids = [mail_id for mail_id in stored_ids if mail_id not in current_ids]
     
-        
 
-    
     db_manager.save_ids(current_ids) #DATABASE
 
     
