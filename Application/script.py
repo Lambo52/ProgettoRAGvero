@@ -71,10 +71,10 @@ queryiniziale = "ci sono mail urgenti?"
 
 #for queryiniziale in evaluation:
 
-start(queryiniziale,topk=5,adjustquery=True,llmevaluation=False, answer=False)
-#start(queryiniziale,topk=5,adjustquery=True,llmevaluation=False)
-#start(queryiniziale,topk=5,adjustquery=False,llmevaluation=False)
-#start(queryiniziale,topk=5,adjustquery=False,llmevaluation=True)
+start(queryiniziale,topk=3,adjustquery=True,llmevaluation=True, answer=False)
+start(queryiniziale,topk=5,adjustquery=True,llmevaluation=False, answer=True)
+start(queryiniziale,topk=5,adjustquery=False,llmevaluation=False, answer=False)
+start(queryiniziale,topk=3,adjustquery=False,llmevaluation=True, answer=False)
 
 # RICORDARSI DI CANCELLARE FAISS_INDEX E DB SE SI VUOLE RESTARTARE, SE NO OBV CARICA LE MAIL SULLO STESSO VDB
 

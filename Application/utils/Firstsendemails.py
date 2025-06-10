@@ -59,7 +59,7 @@ def send_email_llm():
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": "Scrivimi una mail aziendale, inventa un oggetto e un corpo della mail, puoi inserire nomi e date ma inventale"}
         ],
-        model="qwen-2.5-32b", #qwen per generazione mail
+        model="llama-3.1-8b-instant",
         temperature=0.5,
         max_tokens=2048
     )
